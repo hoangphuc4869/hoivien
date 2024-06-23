@@ -452,3 +452,7 @@ td {
 #customers_table .name-tag {
     white-space: normal;
 }
+
+#customers_table thead th {
+    line-height: 1.5;
+}

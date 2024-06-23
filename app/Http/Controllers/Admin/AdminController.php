@@ -51,7 +51,12 @@ class AdminController extends Controller
     public function getMemberById($id) {
         $member = Member::select('*')->where('id', $id)->first();
         if(Gate::allows('view')){
-            return view('admin.profile', compact('member'));
+            if(!empty($member)){
+                return view('admin.profile', compact('member'));
+            }
+            else {
+                abort(403, 'Hội viên không tồn tại');
+            }
         }
         else {
             abort(403, 'Bạn không có quyền truy cập trang này.');
