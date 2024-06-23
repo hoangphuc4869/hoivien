@@ -4,7 +4,14 @@
 <head>
     @include('admin.header')
 </head>
-<body>
+
+<style>
+body * {
+  font-family: 'Be Vietnam Pro', san-serif;
+}
+</style>
+
+<body style="">
   <div class="container-scroller"> 
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
@@ -29,7 +36,7 @@
       <div class="navbar-menu-wrapper d-flex align-items-top"> 
         <ul class="navbar-nav">
           <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
-            <h1 class="welcome-text">Good Morning, <span class="text-black fw-bold">John Doe</span></h1>
+            <h1 class="welcome-text">Xin chào, <span class="text-black fw-bold">{{Auth::user()->name}}</span></h1>
           </li>
         </ul>
         <ul class="navbar-nav ms-auto"> 
@@ -44,15 +51,22 @@
     
           <li class="nav-item dropdown d-none d-lg-block user-dropdown">
             <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-              <img class="img-xs rounded-circle" src="template/images/faces/face8.jpg" alt="Profile image"> </a>
+              <img class="img-xs rounded-circle" src="/template/images/faces/face8.jpg" alt="Profile image"> </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <div class="dropdown-header text-center">
                 <img class="img-md rounded-circle" src="template/images/faces/face8.jpg" alt="Profile image">
                 <p class="mb-1 mt-3 font-weight-semibold">Allen Moreno</p>
                 <p class="fw-light text-muted mb-0">allenmoreno@gmail.com</p>
               </div>
-              <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> My Profile <span class="badge badge-pill badge-danger">1</span></a>             
-              <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>
+              <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> Thông tin của tôi</a>             
+              
+               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+                <a href="{{route("logout")}}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item">
+                    <i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>
+                    Thoát
+                </a>
             </div>
           </li>
         </ul>
@@ -170,7 +184,7 @@
             </div>
           </div>
           <!-- To do section tab ends -->
-          <div class="tab-pane fade" id="chats-section" role="tabpanel" aria-labelledby="chats-section">
+          {{-- <div class="tab-pane fade" id="chats-section" role="tabpanel" aria-labelledby="chats-section">
             <div class="d-flex align-items-center justify-content-between border-bottom">
               <p class="settings-heading border-top-0 mb-3 pl-3 pt-0 border-bottom-0 pb-0">Friends</p>
               <small class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 fw-normal">See All</small>
@@ -228,7 +242,7 @@
                 <small class="text-muted my-auto">47 min</small>
               </li>
             </ul>
-          </div>
+          </div> --}}
           <!-- chat tab ends -->
         </div>
       </div>
@@ -237,7 +251,7 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="../../index.html">
+            <a class="nav-link" href="/">
               <i class="mdi mdi-grid-large menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -257,20 +271,23 @@
               </ul>
             </div>
           </li>
-          <li class="nav-item nav-category">Quản trị viên</li>
-          <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="menu-icon mdi mdi-card-text-outline"></i>
-              <span class="menu-title">Hội viên</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="form-elements" style="">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="{{route('member')}}">Danh sách hội viên</a></li>
-                <li class="nav-item"><a class="nav-link" href="../../pages/forms/basic_elements.html">Lịch sử giao dịch</a></li>
-              </ul>
-            </div>
-          </li>
+          @if (Gate::allows('view'))
+            <li class="nav-item nav-category">Quản trị viên</li>
+            <li class="nav-item">
+              <a class="nav-link collapsed" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+                <i class="menu-icon mdi mdi-card-text-outline"></i>
+                <span class="menu-title">Hội viên</span>
+                <i class="menu-arrow"></i>
+              </a>
+              <div class="collapse" id="form-elements" style="">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item"><a class="nav-link" href="{{route('member')}}">Danh sách hội viên</a></li>
+                  <li class="nav-item"><a class="nav-link" href="../../pages/forms/basic_elements.html">Lịch sử giao dịch</a></li>
+                </ul>
+              </div>
+            </li>
+          @endif
+          
           
           {{-- <li class="nav-item">
             <a class="nav-link collapsed" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
@@ -289,17 +306,24 @@
       </nav>
       <!-- partial -->
       <div class="main-panel">
+        <div class="success suc-btn">
+            <div class="success__icon">
+              <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="m12 1c-6.075 0-11 4.925-11 11s4.925 11 11 11 11-4.925 11-11-4.925-11-11-11zm4.768 9.14c.0878-.1004.1546-.21726.1966-.34383.0419-.12657.0581-.26026.0477-.39319-.0105-.13293-.0475-.26242-.1087-.38085-.0613-.11844-.1456-.22342-.2481-.30879-.1024-.08536-.2209-.14938-.3484-.18828s-.2616-.0519-.3942-.03823c-.1327.01366-.2612.05372-.3782.1178-.1169.06409-.2198.15091-.3027.25537l-4.3 5.159-2.225-2.226c-.1886-.1822-.4412-.283-.7034-.2807s-.51301.1075-.69842.2929-.29058.4362-.29285.6984c-.00228.2622.09851.5148.28067.7034l3 3c.0983.0982.2159.1748.3454.2251.1295.0502.2681.0729.4069.0665.1387-.0063.2747-.0414.3991-.1032.1244-.0617.2347-.1487.3236-.2554z" fill="#393a37" fill-rule="evenodd"></path></svg>
+            </div>
+            <div class="success__title">lorem ipsum dolor sit amet</div>
+            <div class="success__close"><svg height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z" fill="#393a37"></path></svg></div>
+        </div>
         <div class="content-wrapper">
         {{$slot}}
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-        <footer class="footer">
+        {{-- <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Copyright © 2021. All rights reserved.</span>
           </div>
-        </footer>
+        </footer> --}}
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
