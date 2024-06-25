@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // $middleware->append(AuthenticateMiddleware::class);
          $middleware->alias([
             'login' => \App\Http\Middleware\AuthenticateMiddleware::class,
+            'check_date' => \App\Http\Middleware\CheckDate::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

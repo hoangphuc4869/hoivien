@@ -40,7 +40,7 @@ li {
 input {
     display: block;
     outline: none;
-    border: none !important;
+    /* border: none !important; */
 }
 textarea {
     display: block;
@@ -48,7 +48,7 @@ textarea {
 }
 textarea:focus,
 input:focus {
-    border-color: transparent !important;
+    /* border-color: transparent !important; */
 }
 button {
     outline: none !important;
@@ -455,4 +455,26 @@ td {
 
 #customers_table thead th {
     line-height: 1.5;
+}
+
+.wrap-f.card-body {
+    width: 500px;
+    padding: 30px;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.wrap-f.card-body {
+    width: 500px;
+    padding: 30px;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 576px) {
+    .wrap-f.card-body {
+        width: 100%;
+    }
 }

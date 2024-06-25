@@ -8,39 +8,22 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\Auth;
+
 
 class AdminController extends Controller
 {
+    
     public function index() {
-        return view("admin.main");
+
+        return view("admin.main", compact("all_members"));
     }
     
     public function member(Member $members) {
-        
+        $all_members = $members::all();
         
         if(Gate::allows('view')){
-            $all_members = $members::all();
-
-            foreach($all_members as $member){
-                $before_end_1_month = Carbon::parse($member->end)->submonth();
-
-                $about_to_date = now()->diffInMonths($before_end_1_month) <= 0 && now()->diffInMonths($before_end_1_month) >= -1   ? "1" : "0" ;
-                $member->about_to_date = $about_to_date;
-                
-                if(now() > $member->end){
-                    $member->status = "inactive";   
-                }
-                elseif(now() <= $member->end && $member->status === "blocked"){
-                    $member->status = "blocked";   
-                }
-                else {
-                    $member->status = "active";   
-                }
-                $member->save();
-            }
-
-            $all_members = $members::all();
-            
             return view("admin.member", compact('all_members'));
         }
         else {
@@ -49,9 +32,10 @@ class AdminController extends Controller
     }
 
     public function getMemberById($id) {
-        $member = Member::select('*')->where('id', $id)->first();
-        if(Gate::allows('view')){
+        $member = Member::select('*')->where('user_id', $id)->first();
+        if(Gate::allows('view') || (Auth::check() && Auth::user()->id == $id)){
             if(!empty($member)){
+               
                 return view('admin.profile', compact('member'));
             }
             else {
@@ -76,6 +60,71 @@ class AdminController extends Controller
             return response()->json(['success' => true, 'message' => 'Thay đổi trạng thái thành công ']);
         } else {
             return response()->json(['success' => false, 'message' => 'Người dùng không tồn tại']);
+        }
+    }
+
+    public function transaction() {
+        $transactions = Transaction::all();
+        $members = Member::all();
+        return view('admin.transaction', compact('transactions','members'));
+    }
+    public function query(Request $request, Transaction $transaction) {
+
+        $userId = $request->input('userId');
+
+        $user = User::find($userId);
+
+        if ($user) {
+
+            $newTransaction = new Transaction();
+            $transactionCode = 'TXN_' . $user->id . '_' . time();
+            $newTransaction->user_name = $user->name;
+            $newTransaction->user_id = $user->id;
+            $newTransaction->code = $transactionCode;
+            $newTransaction->status = 'pending';
+            $newTransaction->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Transaction created successfully for user ID ' . $userId,
+                'transaction' => $newTransaction 
+            ]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'User not found id' . $userId]);
+        }
+    }
+
+    public function processAccept(Request $request) {
+
+        $itemId = $request->itemId;
+
+        $item = Transaction::find($itemId);
+
+        
+
+        if ($item) {
+
+            if($item->status === "pending") {
+                if($request->status === 'success'){
+                    $member = Member::where('user_id', $item->user_id)->first();
+                    $item->status = "success";
+                    $member->start = now();
+                    $member->end = $member->start->copy()->addYear();
+                    $member->save();
+                }
+                else {
+                    $item->status = "fail";
+                }
+            }
+
+            $item->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => "Thành công",
+            ]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Thất bại']);
         }
     }
  }

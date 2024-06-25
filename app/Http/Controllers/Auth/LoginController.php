@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\Register;
+use App\Models\Member;
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -43,6 +46,37 @@ class LoginController extends Controller
 
         return redirect('/login'); 
     }
+
+    public function register_index() {
+        $title = "Đăng ký hội viên";
+        return view('admin.register', compact('title'));
+    }
+
+    public function register(Register $request)
+    {
+        $data = $request->safe()->except('confirm_pass');
+        
+        $newUser = new User();
+        $newUser->name = $data['name'];
+        $newUser->email = $data['email'];
+        $newUser->password = Hash::make($data['password']); 
+        $newUser->role = $data['role'];
+        $newUser->save();
+
+        
+        $newMember = new Member();
+        $newMember->name = $data['name'];
+        $newMember->contact = $data['email'];
+        $newMember->status = "active";
+        $newMember->start = now();
+        $newMember->end = $newMember->start->copy()->addYear();
+        $newMember->user_id = $newUser->id; 
+
+        $newMember->save();
+
+        return redirect()->back()->with('success', "Đăng ký thành công");
+    }
+
 
     // public function createUser()
     // {

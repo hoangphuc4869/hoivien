@@ -1,0 +1,35 @@
+.accept {
+    width: 30px;
+    height: 30px;
+    background-color: green;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.deny {
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.accept i,
+.deny i {
+    font-size: 20px;
+    color: #fff;
+}
+
+.btn-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.btn-group.active {
+    opacity: 0.1;
+    pointer-events: none;
+}

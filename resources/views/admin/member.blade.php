@@ -1,4 +1,6 @@
+
 <x-main>
+    @section('title', "Danh sách hội viên")
     <link rel="stylesheet" href="/table_template/style.css">
     <div class="member-title-wrap d-flex align-items-center gap-2">
         <i class="mdi mdi-format-list-bulleted d-flex align-items-center"></i> 
@@ -13,12 +15,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th> ID </span></th>
-                        <th class="name-tag"> Họ tên </span></th>
-                        <th> Trạng thái </span></th>
-                        <th> Ngày bắt đầu </span></th>
-                        <th> Ngày kết thúc </span></th>
-                        
+                        <th> ID </th>
+                        <th class="name-tag"> Họ tên </th>
+                        <th> Trạng thái </th>
+                        <th> Ngày bắt đầu </th>
+                        <th> Ngày kết thúc </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,7 +28,7 @@
                         <tr class="row-user user-{{$member->status}} {{$member->about_to_date === 1 ? 'user-about-to-date' : ''}} ">
                             <td>{{$member->id}}</td>
                             <td class="name-tag sticky-name">
-                                <a class="member-name" href="/profile/{{$member->id}}">{{$member->name}}</a>
+                                <a class="member-name" href="/profile/{{$member->user_id}}">{{$member->name}}</a>
                             </td>
                             <td class="d-flex align-items-center gap-2">
                                 <label class="switch {{$member->status === "active" ? "active" : ""}}">
@@ -77,63 +78,60 @@
 
     <script>
         var switches = document.querySelectorAll('.switch');
-var stat_texts = document.querySelectorAll('.switch + .status');
+        var stat_texts = document.querySelectorAll('.switch + .status');
 
-if (switches) {
-    switches.forEach((s, index) => {
-        s.addEventListener("click", (e) => {
-            var parentRow = s.parentElement.parentElement;
-            var userId = parentRow.querySelector("td:first-child").textContent.trim();
-            var token = $('meta[name="csrf-token"]').attr('content');
-            var suc = document.querySelector(".suc-btn");
+        if (switches) {
+            switches.forEach((s, index) => {
+                s.addEventListener("click", (e) => {
+                    var parentRow = s.parentElement.parentElement;
+                    var userId = parentRow.querySelector("td:first-child").textContent.trim();
+                    var token = $('meta[name="csrf-token"]').attr('content');
+                    var suc = document.querySelector(".suc-btn");
 
-            var result = confirm("Thay đổi trạng thái người dùng này?");
+                    var result = confirm("Thay đổi trạng thái người dùng này?");
 
-            if (result) {
-                $.ajax({
-                    url: "{{ route('change.user.status') }}",
-                    type: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': token,
-                        'Content-Type': 'application/json'
-                    },
-                    data: JSON.stringify({ userId: userId }),
-                    success: function(response) {
-                        if (response.success) {
-                            if (s.classList.contains("active")) {
-                                if(parentRow.classList.contains('user-about-to-date')) {
-                                    stat_texts[index].innerHTML = `<span class="text-warning" style="font-size: 12px">Sắp hết hạn</span>, <span class="text-danger" style="font-size: 12px">Khóa</span>`;
+                    if (result) {
+                        $.ajax({
+                            url: "{{ route('change.user.status') }}",
+                            type: "POST",
+                            headers: {
+                                'X-CSRF-TOKEN': token,
+                                'Content-Type': 'application/json'
+                            },
+                            data: JSON.stringify({ userId: userId }),
+                            success: function(response) {
+                                if (response.success) {
+                                    if (s.classList.contains("active")) {
+                                        if(parentRow.classList.contains('user-about-to-date')) {
+                                            stat_texts[index].innerHTML = `<span class="text-warning" style="font-size: 12px">Sắp hết hạn</span>, <span class="text-danger" style="font-size: 12px">Khóa</span>`;
+                                        }
+                                        else {
+                                            stat_texts[index].innerHTML = `<span class="text-danger" style="font-size: 12px">Khóa</span>`;
+                                        }
+                                    } else {
+                                        if(parentRow.classList.contains('user-about-to-date')) {
+                                            stat_texts[index].innerHTML = `<span class="text-warning" style="font-size: 12px">Sắp hết hạn</span>`;
+                                        }
+                                        else {
+                                            stat_texts[index].innerHTML = `<span class="text-success" style="font-size: 12px">Hoạt động</span>`;
+                                        }
+                                    }
+                                    s.classList.toggle("active");
+                                    suc.classList.add("active");
+                                    suc.querySelector(".success__title").textContent = response.message;
+                                    setTimeout(() => {
+                                        suc.classList.remove("active");
+                                    }, 2000);
                                 }
-                                else {
-                                    stat_texts[index].innerHTML = `<span class="text-danger" style="font-size: 12px">Khóa</span>`;
-                                }
-                            } else {
-                                if(parentRow.classList.contains('user-about-to-date')) {
-                                    stat_texts[index].innerHTML = `<span class="text-warning" style="font-size: 12px">Sắp hết hạn</span>`;
-                                }
-                                else {
-                                    stat_texts[index].innerHTML = `<span class="text-success" style="font-size: 12px">Hoạt động</span>`;
-                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('There was a problem with the request.');
                             }
-                            s.classList.toggle("active");
-                            suc.classList.add("active");
-                            suc.querySelector(".success__title").textContent = response.message;
-                            setTimeout(() => {
-                                suc.classList.remove("active");
-                            }, 2000);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('There was a problem with the request.');
+                        });
                     }
                 });
-            }
-        });
-    });
-}
-
-
-
+            });
+        }
     </script>
 
 </x-main>

@@ -1,157 +1,171 @@
 <x-main>
-    <div class="container">
-        <div class="row gutters">
-            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="account-settings">
-                            <div class="user-profile">
-                                <div class="user-avatar">
-                                    <img
-                                        src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                                        alt="Maxwell Admin"
-                                    />
-                                </div>
-                                <h5 class="user-name">{{$member->name}}</h5>
-                                <h6 class="user-email">yuki@Maxwell.com</h6>
-                            </div>
-                            <div class="about">
-                                <h5>About</h5>
-                                <p>
-                                    I'm Yuki. Full Stack Designer I enjoy creating
-                                    user-centric, delightful and human experiences.
-                                </p>
-                            </div>
+    <form action="" method="POST">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-4 col-12">
+                    <div class="form-group">
+                        <label for="thumb">Ảnh chân dung 3x4</label>
+                        <input type="file"  class="form-control" id="upload">
+                        <div id="image_show">
+
                         </div>
+                        <input type="hidden" name="thumb" id="thumb">
+                    </div>
+                </div>
+
+                <div class="col-lg-8 col-12">
+
+                    <div class="form-group">
+                        <label for="name">Họ tên:</label>
+                        <input type="text" name="name" value="{{ old('name') }}" class="form-control"  placeholder="Họ tên">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Giới Tính</label>
+                        <select class="form-control" name="gender">
+                            <option>Nam</option>
+                            <option>Nữ</option>
+                        </select>
+                    </div> 
+
+                    <div class="form-group">
+                        <label for="birthday">Ngày/tháng/năm sinh:</label>
+                        <input type="text" name="birthday" value="{{ old('birthday') }}" class="form-control"  placeholder="dd/mm/yyyy">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="birth_place">Nơi sinh:</label>
+                        <input type="text" name="birth_place" value="{{ old('birth_place') }}" class="form-control"  placeholder="Nơi sinh">
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="row">
+
+                <h4 class="card-title">- Học vị: </h4>
+
+                <div class="col-lg-4 col-12">
+                    <div class="form-group">
+                        <label for="degree">Trung cấp - Cao đẳng - Đại học:</label>
+                        <select class="form-control" name="degree">
+                            <option>Bác sĩ</option>
+                            <option>Điều dưỡng</option>
+                            <option>Kỹ thuật viên</option>
+                            <option>Kỹ sư</option>
+                            <option>Cử nhân</option>
+                            <option>Khác</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-12">
+                    <div class="form-group">
+                        <label for="degree_2">Sau đại học:</label>
+                        <select class="form-control" name="degree_2">
+                            <option>Bác sĩ chuyên khoa I</option>
+                            <option>Bác sĩ chuyên khoa II</option>
+                            <option>Thạc sĩ</option>
+                            <option>Tiến sĩ</option>
+                            <option>Khác</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-12">
+                    <div class="form-group">
+                        <label for="function">Học hàm:</label>
+                        <select class="form-control" name="function">
+                            <option>Phó giáo sư</option>
+                            <option>Giáo sư</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-12">
+                    <div class="form-group">
+                        <label for="specialized">Chuyên ngành:</label>
+                        <input type="text" name="specialized" value="{{ old('specialized') }}" class="form-control"  placeholder="Chuyên ngành">
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-12">
+                    <div class="form-group">
+                        <label for="year">Năm tốt nghiệp chuyên ngành:</label>
+                        <input type="text" name="year" value="{{ old('year') }}" class="form-control"  placeholder="Năm tốt nghiệp">
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-12">
+                    <div class="form-group">
+                        <label for="name_school">Tên trường tốt nghiệp chuyên ngành:</label>
+                        <input type="text" name="name_school" value="{{ old('name_school') }}" class="form-control"  placeholder="Tên trường tốt nghiệp">
                     </div>
                 </div>
             </div>
-            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="row gutters">
-                            <div
-                                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                            >
-                                <h6 class="mb-2 text-primary">Personal Details</h6>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="fullName">Full Name</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="fullName"
-                                        placeholder="Enter full name"
-                                    />
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="eMail">Email</label>
-                                    <input
-                                        type="email"
-                                        class="form-control"
-                                        id="eMail"
-                                        placeholder="Enter email ID"
-                                    />
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="phone">Phone</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="phone"
-                                        placeholder="Enter phone number"
-                                    />
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="website">Website URL</label>
-                                    <input
-                                        type="url"
-                                        class="form-control"
-                                        id="website"
-                                        placeholder="Website url"
-                                    />
-                                </div>
-                            </div>
+
+
+            <div class="row">
+                <div class="col-lg-4 col-12">
+                    <div class="form-group">
+                        <label for="thumb_2">Ảnh bằng tốt nghiệp chuyên ngành</label>
+                        <input type="file"  class="form-control" id="upload_2">
+                        <div id="image_show_2">
+
                         </div>
-                        <div class="row gutters">
-                            <div
-                                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                            >
-                                <h6 class="mt-3 mb-2 text-primary">Address</h6>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="Street">Street</label>
-                                    <input
-                                        type="name"
-                                        class="form-control"
-                                        id="Street"
-                                        placeholder="Enter Street"
-                                    />
+                        <input type="hidden" name="thumb_2" id="thumb_2">
+                    </div>
+                </div>
+
+                <div class="col-lg-8 col-12">
+
+                    <div class="form-group">
+                        <label for="name_company">Tên cơ quan công tác (không viết tắt):</label>
+                        <input type="text" name="name_company" value="{{ old('name_company') }}" class="form-control"  placeholder="Tên cơ quan công tác">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="office">Chức vụ tại nơi công tác:</label>
+                        <input type="text" name="office" value="{{ old('office') }}" class="form-control"  placeholder="Chức vụ tại nơi công tác">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Địa chỉ liên lạc và nhận thư/bưu phẩm:</label>
+                        <input type="text" name="address" value="{{ old('address') }}" class="form-control"  placeholder="Địa chỉ liên lạc">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">Ngày vào Đảng (nếu có):</label>
+                        <input type="text" name="date" value="{{ old('date') }}" class="form-control"  placeholder="Ngày vào Đảng">
+                    </div>
+
+
+                    <!-- nộp phí -->
+
+                    <!-- Button trigger modal -->
+                    
+                    <div class="payment">
+                        <button type="button" class="btn btn-warning btn-rounded btn-fw" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Đóng Phí Thường Niên
+                        </button>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Đóng Phí Thường Niên</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="ciTy">City</label>
-                                    <input
-                                        type="name"
-                                        class="form-control"
-                                        id="ciTy"
-                                        placeholder="Enter City"
-                                    />
+                                <div class="modal-body">
+                                    <p class="text-pay">Phí Thường Niên: <b>500.000 VND</b></p>
+
+                                    <img class="img-qr" src="" alt="Profile image">
                                 </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="sTate">State</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="sTate"
-                                        placeholder="Enter State"
-                                    />
-                                </div>
-                            </div>
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                <div class="form-group">
-                                    <label for="zIp">Zip Code</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="zIp"
-                                        placeholder="Zip Code"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row gutters">
-                            <div
-                                class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
-                            >
-                                <div class="text-right">
-                                    <button
-                                        type="button"
-                                        id="submit"
-                                        name="submit"
-                                        class="btn btn-secondary"
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        type="button"
-                                        id="submit"
-                                        name="submit"
-                                        class="btn btn-primary"
-                                    >
-                                        Update
-                                    </button>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -159,71 +173,12 @@
                 </div>
             </div>
         </div>
-    </div>
+
+
+        <button type="submit" class="btn btn-primary">Cập Nhật Thông Tin</button>
+
+        @csrf
+    </form>
+   
    
 </x-main>
-
-<style>
-    body {
-    margin: 0;
-    padding-top: 40px;
-    color: #2e323c;
-    background: #f5f6fa;
-    position: relative;
-    height: 100%;
-}
-.account-settings .user-profile {
-    margin: 0 0 1rem 0;
-    padding-bottom: 1rem;
-    text-align: center;
-}
-.account-settings .user-profile .user-avatar {
-    margin: 0 0 1rem 0;
-}
-.account-settings .user-profile .user-avatar img {
-    width: 90px;
-    height: 90px;
-    -webkit-border-radius: 100px;
-    -moz-border-radius: 100px;
-    border-radius: 100px;
-}
-.account-settings .user-profile h5.user-name {
-    margin: 0 0 0.5rem 0;
-}
-.account-settings .user-profile h6.user-email {
-    margin: 0;
-    font-size: 0.8rem;
-    font-weight: 400;
-    color: #9fa8b9;
-}
-.account-settings .about {
-    margin: 2rem 0 0 0;
-    text-align: center;
-}
-.account-settings .about h5 {
-    margin: 0 0 15px 0;
-    color: #007ae1;
-}
-.account-settings .about p {
-    font-size: 0.825rem;
-}
-.form-control {
-    border: 1px solid #cfd1d8;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-    font-size: .825rem;
-    background: #ffffff;
-    color: #2e323c;
-}
-
-.card {
-    background: #ffffff;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    border: 0;
-    margin-bottom: 1rem;
-}
-
-</style>

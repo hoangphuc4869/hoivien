@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
+use App\Models\Member;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        
     }
 
     /**
@@ -22,10 +23,22 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('view', function (User $user) {
-            return $user->role === "admin";
+            return $user->role === "admin" ;
         });
+        
         Gate::define('user', function (User $user) {
-            return $user->role === "user";
+            $member = Member::where('user_id', $user->id)->first();
+            return $user->role === "user" && $member->status !== "blocked" && $member->status !== "inactive";
+        });
+
+        Gate::define('out_of_date', function (User $user) {
+            $member = Member::where('user_id', $user->id)->first();
+            return $user->role === "user" && $member->status === "inactive";
+        });
+
+        Gate::define('blocked', function (User $user) {
+            $member = Member::where('user_id', $user->id)->first();
+            return $user->role === "user" && $member->status === "blocked";
         });
      
     }

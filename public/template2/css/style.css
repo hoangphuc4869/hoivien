@@ -1,0 +1,41 @@
+.form-control {
+    height: 40px;
+}
+
+#image_show img,
+#image_show_2 img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    margin-top: 20px;
+}
+
+#avatar {
+    width: 60px;
+    height: 60px;
+}
+
+.payment {
+    text-align: right;
+}
+
+.text-pay {
+    font-size: 14px;
+    font-weight: 400;
+    color: black;
+}
+
+.text-pay b {
+    font-size: 18px;
+}
+
+.img-qr {
+    width: 50%;
+    height: auto;
+}
+
+@media(max-width: 450px) {
+    .payment {
+        text-align: left;
+    }
+}
