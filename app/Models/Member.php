@@ -14,4 +14,24 @@ class Member extends Model
      * @var array
      */
     protected $dates = ['start', 'end'];
+    protected $fillable = [
+        'name',
+        'thumb',
+        'gender',
+        'birthday',
+        'birth_place',
+        'degree',
+        'degree_2',
+        'function',
+        'specialized',
+        'year',
+        'name_school',
+        'thumb_2',
+        'name_company',
+        'office',
+        'address',
+        'date',
+        'email',
+        'phone'
+    ];
 }

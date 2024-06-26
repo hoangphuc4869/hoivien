@@ -28,4 +28,4 @@
   
   <link rel="stylesheet" href="/assets/css/member.css">
   <link rel="stylesheet" href="/template2/css/style.css">
-  <link rel="stylesheet" href="/template2/js/main.css">
+

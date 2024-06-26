@@ -66,7 +66,7 @@ class LoginController extends Controller
         
         $newMember = new Member();
         $newMember->name = $data['name'];
-        $newMember->contact = $data['email'];
+        $newMember->email = $data['email'];
         $newMember->status = "active";
         $newMember->start = now();
         $newMember->end = $newMember->start->copy()->addYear();

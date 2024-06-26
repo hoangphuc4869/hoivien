@@ -16,8 +16,8 @@ class AdminController extends Controller
 {
     
     public function index() {
-
-        return view("admin.main", compact("all_members"));
+        
+        return view("admin.main");
     }
     
     public function member(Member $members) {
@@ -33,18 +33,20 @@ class AdminController extends Controller
 
     public function getMemberById($id) {
         $member = Member::select('*')->where('user_id', $id)->first();
-        if(Gate::allows('view') || (Auth::check() && Auth::user()->id == $id)){
+        
             if(!empty($member)){
-               
+               if(Gate::allows('view') || (Auth::check() && Auth::user()->id == $id && $member->status !== "blocked")){
                 return view('admin.profile', compact('member'));
+               }
+              else {
+                    abort(403, 'Bạn không có quyền truy cập trang này.');
+                }
             }
             else {
                 abort(403, 'Hội viên không tồn tại');
             }
-        }
-        else {
-            abort(403, 'Bạn không có quyền truy cập trang này.');
-        }
+        
+       
     }
     
     public function changeStatus(Request $request)
@@ -68,11 +70,40 @@ class AdminController extends Controller
         $members = Member::all();
         return view('admin.transaction', compact('transactions','members'));
     }
-    public function query(Request $request, Transaction $transaction) {
+    public function query(Request $request) {
 
         $userId = $request->input('userId');
 
         $user = User::find($userId);
+
+        $mem = Member::where('user_id', $user->id)->first();
+        
+
+        if ($user) {
+
+            $newTransaction = new Transaction();
+            $transactionCode = 'TXN_' . $user->id . '_' . time();
+            $newTransaction->user_name = $user->name;
+            $newTransaction->user_id = $mem->id;
+            $newTransaction->code = $transactionCode;
+            $newTransaction->status = 'pending';
+            $newTransaction->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Transaction created successfully for user ID ' . $mem->id,
+                'transaction' => $newTransaction 
+            ]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'User not found id' . $mem->id]);
+        }
+    }
+
+    public function query_in_profile(Request $request) {
+
+        $userId = $request->input('userId');
+
+        $user = Member::find($userId);
 
         if ($user) {
 
@@ -86,7 +117,7 @@ class AdminController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Transaction created successfully for user ID ' . $userId,
+                'message' => 'successfully',
                 'transaction' => $newTransaction 
             ]);
         } else {
@@ -106,7 +137,7 @@ class AdminController extends Controller
 
             if($item->status === "pending") {
                 if($request->status === 'success'){
-                    $member = Member::where('user_id', $item->user_id)->first();
+                    $member = Member::where('id', $item->user_id)->first();
                     $item->status = "success";
                     $member->start = now();
                     $member->end = $member->start->copy()->addYear();

@@ -15,7 +15,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th> ID </span></th>
+                        <th> STT </span></th>
                         <th class="name-tag"> Mã giao dịch </span></th>
                         <th> Hội viên </span></th>
                         <th> Trạng thái </span></th>
@@ -27,7 +27,7 @@
                     @foreach ($transactions->sortByDesc('id') as $transaction)
 
                         @php
-                            $member = $members->where('user_id', $transaction->user_id)->first();
+                            $member = $members->where('id', $transaction->user_id)->first();
                         @endphp
                         <tr >
                             <td>{{$transaction->id}}</td>
@@ -35,7 +35,7 @@
                                 {{$transaction->code}}
                             </td>
                             <td class="">
-                                <a style="text-decoration:none; color: #212529 " href="/profile/{{$member->id}}">{{$transaction->user_name}}</a>
+                                <a style="text-decoration:none; color: #212529 " href="/profile/{{$member->user_id}}">{{$transaction->user_name}}</a>
                             </td>
                             <td>
                                 @if ($transaction->status ==="pending")
@@ -110,7 +110,7 @@
                             }, 2000);
                             info.innerHTML = `<button class="btn btn-success status-info" style="pointer-events: none;width:140px">Thành công</button>`;
                         } else {
-                            alert('Accept không thành công: ' + response.message);
+                            alert(response.message);
                         }
                     },
                     error: function(xhr, status, error) {

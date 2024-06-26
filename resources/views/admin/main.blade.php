@@ -1,6 +1,4 @@
 <x-main>
-
-    {{-- {{$all_members}} --}}
     
      @if (Gate::allows('out_of_date'))
         <div class="cookie-wrap d-flex justify-content-center" style="margin-top: 100px">
@@ -36,6 +34,9 @@
     var btn = document.querySelector(".click-btn");
     if(btn){
         btn.addEventListener("click", () => {
+            btn.classList.add("disabled");
+            alert("Đã đăng ký gia hạn. Vui lòng chờ xác nhận");
+            
             var userId = document.querySelector("body").dataset.id;
             var token = $('meta[name="csrf-token"]').attr('content');
 
@@ -72,6 +73,11 @@
  transition: all 0.5s;
  cursor: pointer;
  margin: 5px;
+}
+
+.click-btn.disabled {
+ pointer-events: none;
+ opacity: 0.3;
 }
 
 .click-btn span {
