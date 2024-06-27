@@ -78,15 +78,16 @@ class LoginController extends Controller
     }
 
 
-    // public function createUser()
-    // {
-        
-    //     $user = new User();
-    //     $user->name = 'Hoang Phuc';
-    //     $user->email = '123@gmail.com';
-    //     $user->password = Hash::make('123'); 
-    //     $user->save();
+   public function createUser()
+    {
+        // Tạo một người dùng có vai trò là admin
+        $user = new User();
+        $user->email = "hsma@admin.com";
+        $user->name = "Quản trị viên";
+        $user->role = 'admin';
+        $user->password = Hash::make('123'); // Mã hóa mật khẩu '123' bằng bcrypt
+        $user->save();
 
-    //     return 'User created successfully!';
-    // }
+        return response()->json(['message' => 'Admin user created successfully'], 200);
+    }
 }

@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\Member;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,6 +41,8 @@ class AppServiceProvider extends ServiceProvider
             $member = Member::where('user_id', $user->id)->first();
             return $user->role === "user" && $member->status === "blocked";
         });
+
+         Paginator::useBootstrap();
      
     }
 }

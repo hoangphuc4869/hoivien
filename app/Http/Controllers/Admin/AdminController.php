@@ -21,7 +21,7 @@ class AdminController extends Controller
     }
     
     public function member(Member $members) {
-        $all_members = $members::all();
+        $all_members = $members::orderBy('id', 'desc')->paginate(15);
         
         if(Gate::allows('view')){
             return view("admin.member", compact('all_members'));
@@ -66,7 +66,7 @@ class AdminController extends Controller
     }
 
     public function transaction() {
-        $transactions = Transaction::all();
+        $transactions = Transaction::paginate(15);
         $members = Member::all();
         return view('admin.transaction', compact('transactions','members'));
     }
@@ -158,4 +158,10 @@ class AdminController extends Controller
             return response()->json(['success' => false, 'message' => 'Thất bại']);
         }
     }
+
+    // public function get_user_transactions($id){
+    //     $transactions = Transaction::paginate(15);
+    //     $members = Member::all();
+    //     return view('admin.transaction', compact('transactions','members'));
+    // }
  }

@@ -41,6 +41,22 @@ class MemberController extends Controller
     }
 
     public function register_index(){
+        // Lấy danh sách email từ bảng members
+        $emails = Member::pluck('email')->toArray();
+
+        // Tạo người dùng từ mỗi email
+        foreach ($emails as $email) {
+            // Kiểm tra xem người dùng có tồn tại không
+            $existingUser = User::where('email', $email)->first();
+            if (!$existingUser) {
+                // Tạo người dùng mới nếu chưa tồn tại
+                $user = new User();
+                $user->email = $email;
+                $user->password = Hash::make('123'); // Mã hóa mật khẩu
+                $user->role = 'user'; // Gán vai trò là 'user'
+                $user->save();
+            }
+        }
         return view('admin.users.register', ['title' => 'Đăng ký hội viên']);
     }
     

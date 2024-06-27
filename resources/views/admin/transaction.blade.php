@@ -65,6 +65,17 @@
         </section>
     </div>
 
+    <div class="pag d-flex justify-content-center align-items-center mt-3">
+        {{ $transactions->links() }}
+        {{-- {{ $all_members->links('pagination::default') }} --}}
+    </div>
+
+    <style>
+        .pag nav {
+            overflow: auto
+        }
+    </style>
+
     
 
 </x-main>
@@ -135,7 +146,7 @@
 
             var info = parentRow.querySelector('.status-info').parentElement; 
             
-            var result = confirm("Chuyển trạng thái sang thành công?");
+            var result = confirm("Chuyển trạng thái sang thất bại?");
 
             if (result) {
                 $.ajax({

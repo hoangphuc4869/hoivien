@@ -73,8 +73,19 @@
                     @endforeach
                 </tbody>
             </table>
+           
         </section>
     </div>
+    <div class="pag d-flex justify-content-center align-items-center mt-3">
+        {{ $all_members->links() }}
+        {{-- {{ $all_members->links('pagination::default') }} --}}
+    </div>
+
+    <style>
+        .pag nav {
+            overflow: auto
+        }
+    </style>
 
     <script>
         var switches = document.querySelectorAll('.switch');
