@@ -9,6 +9,38 @@
         </div>
     </div>
 
+    <div class="search-bar mt-4 d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-2">
+            <div class="group">
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
+                    <g>
+                    <path
+                        d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"
+                    ></path>
+                    </g>
+                </svg>
+                <input class="input" type="search" placeholder="Tìm kiếm" />
+            </div>
+            <div class="search-btn">
+                <button class="button">
+                    <span>
+                        <svg viewBox="0 0 24 24" height="15" width="15" xmlns="http://www.w3.org/2000/svg"><path d="M9.145 18.29c-5.042 0-9.145-4.102-9.145-9.145s4.103-9.145 9.145-9.145 9.145 4.103 9.145 9.145-4.102 9.145-9.145 9.145zm0-15.167c-3.321 0-6.022 2.702-6.022 6.022s2.702 6.022 6.022 6.022 6.023-2.702 6.023-6.022-2.702-6.022-6.023-6.022zm9.263 12.443c-.817 1.176-1.852 2.188-3.046 2.981l5.452 5.453 3.014-3.013-5.42-5.421z"></path></svg>
+                    </span>
+                </button>
+            </div>
+            <div class="loader">
+                <li class="ball"></li>
+                <li class="ball"></li>
+                <li class="ball"></li>
+            </div>
+        </div>
+        <div class="search-result">
+            
+        </div>
+    </div>
+
+    
+
    <div class="table" id="customers_table">
        
         <section class="table__body">
@@ -20,12 +52,13 @@
                         <th> Trạng thái </th>
                         <th> Ngày bắt đầu </th>
                         <th> Ngày kết thúc </th>
+                        <th>  </th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($all_members as $member)
                     
-                        <tr class="row-user user-{{$member->status}} {{$member->about_to_date === 1 ? 'user-about-to-date' : ''}} ">
+                        <tr class="row-user user-{{$member->status}} {{$member->about_to_date === 1 ? 'user-about-to-date' : ''}} " id="{{$member->id}}">
                             <td>{{$member->id}}</td>
                             <td class="name-tag sticky-name">
                                 <a class="member-name" href="/profile/{{$member->user_id}}">{{$member->name}}</a>
@@ -69,6 +102,56 @@
                             </td>
                             <td>{{\Carbon\Carbon::parse($member->start)->format('d-m-Y H:i')}}</td>
                             <td>{{\Carbon\Carbon::parse($member->end)->format('d-m-Y H:i')}}</td>
+                            <td>
+                                <button class="bin-button">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 39 7"
+                                        class="bin-top"
+                                    >
+                                        <line stroke-width="4" stroke="white" y2="5" x2="39" y1="5"></line>
+                                        <line
+                                        stroke-width="3"
+                                        stroke="white"
+                                        y2="1.5"
+                                        x2="26.0357"
+                                        y1="1.5"
+                                        x1="12"
+                                        ></line>
+                                    </svg>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 33 39"
+                                        class="bin-bottom"
+                                    >
+                                        <mask fill="white" id="path-1-inside-1_8_19">
+                                        <path
+                                            d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z"
+                                        ></path>
+                                        </mask>
+                                        <path
+                                        mask="url(#path-1-inside-1_8_19)"
+                                        fill="white"
+                                        d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z"
+                                        ></path>
+                                        <path stroke-width="4" stroke="white" d="M12 6L12 29"></path>
+                                        <path stroke-width="4" stroke="white" d="M21 6V29"></path>
+                                    </svg>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 89 80"
+                                        class="garbage"
+                                    >
+                                        <path
+                                        fill="white"
+                                        d="M20.5 10.5L37.5 15.5L42.5 11.5L51.5 12.5L68.75 0L72 11.5L79.5 12.5H88.5L87 22L68.75 31.5L75.5066 25L86 26L87 35.5L77.5 48L70.5 49.5L80 50L77.5 71.5L63.5 58.5L53.5 68.5L65.5 70.5L45.5 73L35.5 79.5L28 67L16 63L12 51.5L0 48L16 25L22.5 17L20.5 10.5Z"
+                                        ></path>
+                                    </svg>
+                                </button>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -76,16 +159,16 @@
            
         </section>
     </div>
-    <div class="pag d-flex justify-content-center align-items-center mt-3">
+    {{-- <div class="pag d-flex justify-content-center align-items-center mt-3">
         {{ $all_members->links() }}
-        {{-- {{ $all_members->links('pagination::default') }} --}}
+        
     </div>
 
     <style>
         .pag nav {
             overflow: auto
         }
-    </style>
+    </style> --}}
 
     <script>
         var switches = document.querySelectorAll('.switch');
@@ -144,6 +227,108 @@
             });
         }
     </script>
+
+
+    <script>
+        var deletes = document.querySelectorAll('.bin-button');
+
+        if (deletes) {
+            deletes.forEach((s, index) => {
+                s.addEventListener("click", (e) => {
+                    var parentRow = s.parentElement.parentElement;
+                    var userId = parentRow.querySelector("td:first-child").textContent.trim();
+                  
+                    var token = $('meta[name="csrf-token"]').attr('content');
+                    var suc = document.querySelector(".suc-btn");
+                    var result = confirm("Xác nhận xóa?");
+
+                    if (result) {
+                        $.ajax({
+                            url: "{{ route('delete') }}",
+                            type: "POST",
+                            headers: {
+                                'X-CSRF-TOKEN': token,
+                                'Content-Type': 'application/json'
+                            },
+                            data: JSON.stringify({ userId: userId }),
+                            success: function(response) {
+
+                                suc.classList.add("active");
+                                suc.querySelector(".success__title").textContent = response.message;
+                                parentRow.remove();
+                                setTimeout(() => {
+                                    suc.classList.remove("active");
+                                }, 2000);
+                                
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('There was a problem with the request.');
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    </script>
+
+
+    <script>
+
+        var searchBtn = document.querySelector('.search-btn');
+        var searchResults = document.querySelector('.search-result');
+     
+        if (searchBtn) {
+            searchBtn.addEventListener("click", () => {
+
+                var token = $('meta[name="csrf-token"]').attr('content');
+                var suc = document.querySelector(".suc-btn");
+                var loader = document.querySelector(".loader");
+                var searchInput = document.querySelector('.search-bar input').value;
+
+                $.ajax({
+                    url: "{{ route('search') }}",
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': token,
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify({ searchInput: searchInput }),
+                    success: function(response) {
+
+                        if(response.success){
+
+                            loader.classList.add("active");
+                            setTimeout(() => {
+                                loader.classList.remove("active");
+                                document.querySelector('#customers_table').classList.add("active")
+                                searchResults.innerHTML = `<span class="text-success">${response.member.length} kết quả</span>`;
+                                response.member.forEach(mem => {
+                                    document.getElementById(`${mem}`).classList.add("queried");
+                                })
+                                
+                            }, 1500);
+                            
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('There was a problem with the request.');
+                    }
+                });
+                
+            });
+        }
+
+        document.addEventListener("click", (e)=> {
+            if(!searchBtn.contains(e.target) && !document.querySelector("#customers_table").contains(e.target)){
+                document.querySelector("#customers_table").classList.remove('active');
+                document.querySelectorAll("tr.queried").forEach(i => {
+                    i.classList.remove('queried');
+                });
+                searchResults.innerHTML = ''
+            }
+        })
+    </script>
+
 
 </x-main>
 

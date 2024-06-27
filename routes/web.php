@@ -15,7 +15,7 @@ Route::middleware(['login', 'check_date'] )->group(function() {
     
     Route::post('/profile/{id}', [MemberController::class, 'store']);
 
-    Route::get('/danh-sach-hoi-vien', [AdminController::class, 'member'])->name('member');
+    Route::get('/list', [AdminController::class, 'member'])->name('member');
     Route::get('/profile/{id}', [AdminController::class, 'getMemberById'])->name('showProfile');
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::post('/register', [LoginController::class, 'register'])->name("regis");
@@ -28,6 +28,8 @@ Route::post('/change', [AdminController::class, 'changeStatus'])->name('change.u
 Route::post('/queryid', [AdminController::class, 'query'])->name('query');
 Route::post('/query-id-profile', [AdminController::class, 'query_in_profile'])->name('query_in_profile');
 Route::post('/process-accept', [AdminController::class, 'processAccept'])->name('accept');
+Route::post('/delete', [AdminController::class, 'delete'])->name('delete');
+Route::post('/search', [AdminController::class, 'search'])->name('search');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 

@@ -21,8 +21,8 @@ class AdminController extends Controller
     }
     
     public function member(Member $members) {
-        $all_members = $members::orderBy('id', 'desc')->paginate(15);
-        
+        $all_members = $all_members = $members->orderBy('id', 'desc')->get();
+
         if(Gate::allows('view')){
             return view("admin.member", compact('all_members'));
         }
@@ -164,4 +164,40 @@ class AdminController extends Controller
     //     $members = Member::all();
     //     return view('admin.transaction', compact('transactions','members'));
     // }
+
+    public function delete(Request $request) {
+        $userId = $request->input('userId');
+
+        $member = Member::find($userId);
+        $user = User::find($member->user_id);
+        if ($user && $member) {
+
+            $member->delete();  
+            $user->delete();
+
+            return response()->json(['success' => true, 'message' => 'Xóa thành công']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Xóa thất bại']);
+        }
+    }
+
+    public function search(Request $request) {
+        $searchInput = $request->input('searchInput');
+        $query = Member::query();
+        
+        if ($searchInput) {
+            $ids = $query->where('name', 'LIKE', "%{$searchInput}%")
+                ->orWhere('email', 'LIKE', "%{$searchInput}%")
+                ->orderBy('id', 'desc')
+                ->pluck('id'); 
+
+            return response()->json([
+                'success' => true, 
+                'message' => 'Tìm thấy ' . $ids->count() . ' kết quả', 
+                'member' => $ids
+            ]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Không tìm thấy']);
+        }
+    }
  }
