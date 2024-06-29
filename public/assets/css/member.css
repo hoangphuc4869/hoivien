@@ -450,7 +450,7 @@ td {
 }
 
 #customers_table .name-tag {
-    white-space: normal;
+    white-space: nowrap;
 }
 
 #customers_table thead th {
@@ -650,8 +650,9 @@ input:hover {
 }
 
 #customers_table {
-    height: 1000px;
+    height: 600px;
     overflow: auto;
+    margin-top: 30px;
 }
 
 #customers_table thead {
@@ -668,11 +669,23 @@ input:hover {
     display: none;
 }
 
-.loader.active {
+#customers_table tbody tr td:nth-child(4) {
+    width: 150px;
+}
+
+#customers_table thead:nth-child(4) {
+    width: 150px;
+}
+.loader {
     width: 60px;
     display: flex;
     gap: 3px;
     margin-top: 10px;
+    transition: 0.3s ease;
+}
+
+.loader.active {
+    opacity: 1;
 }
 
 .ball {
@@ -716,8 +729,56 @@ input:hover {
     }
 }
 
+.radio-inputs {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 0.5rem;
+    background-color: #eee;
+    box-sizing: border-box;
+    box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+    padding: 0.25rem;
+    width: 450px;
+    font-size: 14px;
+}
+
+.radio-inputs .radio {
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+.radio-inputs .radio input {
+    display: none;
+}
+
+.radio-inputs .radio .name {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: none;
+    padding: 0.5rem 0;
+    color: rgba(51, 65, 85, 1);
+    transition: all 0.15s ease-in-out;
+}
+
+.radio-inputs .radio input:checked + .name {
+    background-color: #fff;
+    font-weight: 600;
+}
+
+#customers_table tbody tr.hide {
+    /* opacity: 0; */
+    display: none;
+}
+
 @media (max-width: 576px) {
     .wrap-f.card-body {
         width: 100%;
+    }
+    .search-bar.mt-4.d-flex.justify-content-between.align-items-center {
+        flex-direction: column;
+        gap: 20px;
     }
 }

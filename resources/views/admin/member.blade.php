@@ -33,15 +33,48 @@
                 <li class="ball"></li>
                 <li class="ball"></li>
             </div>
-        </div>
-        <div class="search-result">
             
         </div>
+
+        <div class="d-flex gap-2 align-items-center box-filter">
+            <div class="loader loader2">
+                <li class="ball"></li>
+                <li class="ball"></li>
+                <li class="ball"></li>
+            </div>
+            <div class="radio-inputs">
+                <label class="radio">
+                    <input type="radio" checked name="radio" >
+                    <span class="name filter-all text-primary">Tất cả</span>
+                </label>
+                <label class="radio">
+                    <input type="radio" name="radio">
+                    <span class="name filter-active text-success">Hoạt động</span>
+                </label>
+                <label class="radio">
+                    <input type="radio" name="radio">
+                    <span class="name filter-about text-warning">Sắp hết hạn</span>
+                </label>
+                <label class="radio">
+                    <input type="radio" name="radio">
+                    <span class="name filter-inactive text-danger">Quá hạn</span>
+                </label>
+                <label class="radio">
+                    <input type="radio" name="radio">
+                    <span class="name filter-blocked text-danger">Khóa</span>
+                </label>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="search-result mt-3">
+                
     </div>
 
     
 
-   <div class="table" id="customers_table">
+   <div class="table mt-3" id="customers_table">
        
         <section class="table__body">
             <table>
@@ -50,6 +83,7 @@
                         <th> ID </th>
                         <th class="name-tag"> Họ tên </th>
                         <th> Trạng thái </th>
+                        <th> Email </th>
                         <th> Ngày bắt đầu </th>
                         <th> Ngày kết thúc </th>
                         <th>  </th>
@@ -58,7 +92,7 @@
                 <tbody>
                     @foreach ($all_members as $member)
                     
-                        <tr class="row-user user-{{$member->status}} {{$member->about_to_date === 1 ? 'user-about-to-date' : ''}} " id="{{$member->id}}">
+                        <tr class="row-user user-{{$member->status}} {{$member->about_to_date === 1 ? 'user-about-to-date' : ''}}" id="{{$member->id}}">
                             <td>{{$member->id}}</td>
                             <td class="name-tag sticky-name">
                                 <a class="member-name" href="/profile/{{$member->user_id}}">{{$member->name}}</a>
@@ -100,6 +134,7 @@
                                     @endif
                                 </div>
                             </td>
+                            <td>{{$member->email}}</td>
                             <td>{{\Carbon\Carbon::parse($member->start)->format('d-m-Y H:i')}}</td>
                             <td>{{\Carbon\Carbon::parse($member->end)->format('d-m-Y H:i')}}</td>
                             <td>
@@ -319,7 +354,11 @@
         }
 
         document.addEventListener("click", (e)=> {
-            if(!searchBtn.contains(e.target) && !document.querySelector("#customers_table").contains(e.target)){
+            if(!searchBtn.contains(e.target) && !document.querySelector("#customers_table").contains(e.target) && !document.querySelector(".radio-inputs").contains(e.target)){
+                document.querySelector("#customers_table").classList.remove('active');
+                document.querySelectorAll(".row-user.hide").forEach(item=>{
+                    item.classList.remove("hide")
+                });
                 document.querySelector("#customers_table").classList.remove('active');
                 document.querySelectorAll("tr.queried").forEach(i => {
                     i.classList.remove('queried');
@@ -327,6 +366,94 @@
                 searchResults.innerHTML = ''
             }
         })
+
+
+
+        var all = document.querySelector(".filter-all");
+        var active = document.querySelector(".filter-active");
+        var inactive = document.querySelector(".filter-inactive");
+        var blocked = document.querySelector(".filter-blocked");
+        var about = document.querySelector(".filter-about");
+        var loader2 = document.querySelector(".loader2");
+        
+        var all = document.querySelector(".filter-all");
+        all.addEventListener("click", (e) => {
+            document.querySelector('.box-filter .loader').classList.add("active");
+
+            setTimeout(() => {
+                document.querySelector('.box-filter .loader.active').classList.remove("active");
+                document.querySelectorAll(".row-user.hide").forEach(item=>{
+                    item.classList.remove("hide")
+                });
+            }, 1500);
+            
+
+        })
+
+        active.addEventListener("click", () => {
+            document.querySelector('.box-filter .loader').classList.add("active");
+
+            setTimeout(() => {
+                document.querySelector('.box-filter .loader.active').classList.remove("active");
+                document.querySelectorAll(".row-user.hide").forEach(item=>{
+                    item.classList.remove("hide")
+                });
+                document.querySelectorAll(".row-user:not(.user-active)").forEach(item=>{
+                    item.classList.add("hide")
+                });
+            }, 1500);
+            
+
+        })
+
+        inactive.addEventListener("click", () => {
+            document.querySelector('.box-filter .loader').classList.add("active");
+
+            setTimeout(() => {
+                document.querySelector('.box-filter .loader.active').classList.remove("active");
+                document.querySelectorAll(".row-user.hide").forEach(item=>{
+                    item.classList.remove("hide")
+                });
+                document.querySelectorAll(".row-user:not(.user-inactive)").forEach(item=>{
+                    item.classList.add("hide")
+                });
+            }, 1500);
+            
+
+        })
+
+        blocked.addEventListener("click", () => {
+            document.querySelector('.box-filter .loader').classList.add("active");
+
+            setTimeout(() => {
+                document.querySelector('.box-filter .loader.active').classList.remove("active");
+                document.querySelectorAll(".row-user.hide").forEach(item=>{
+                    item.classList.remove("hide")
+                });
+                document.querySelectorAll(".row-user:not(.user-blocked)").forEach(item=>{
+                    item.classList.add("hide")
+                });
+            }, 1500);
+            
+
+        })
+
+        about.addEventListener("click", () => {
+            document.querySelector('.box-filter .loader').classList.add("active");
+
+            setTimeout(() => {
+                document.querySelector('.box-filter .loader.active').classList.remove("active");
+                document.querySelectorAll(".row-user.hide").forEach(item=>{
+                    item.classList.remove("hide");
+                });
+                document.querySelectorAll(".row-user:not(.user-about-to-date)").forEach(item=>{
+                    item.classList.add("hide");
+                });
+            }, 1500);
+            
+        })
+        
+
     </script>
 
 

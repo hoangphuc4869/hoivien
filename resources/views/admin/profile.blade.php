@@ -60,7 +60,7 @@
                 <div class="col-lg-4 col-12">
                     <div class="form-group">
                         <label for="degree">Trung cấp - Cao đẳng - Đại học:</label>
-                        <select class="form-control" name="degree">
+                        <select class="form-control" name="degree" style="background: #fff;color: #000;">
                             <option {{$member->degree === "Bác sĩ" ? "selected" : ""}}>Bác sĩ</option>
                             <option {{$member->degree === "Điều dưỡng" ? "selected" : ""}}>Điều dưỡng</option>
                             <option {{$member->degree === "Kỹ thuật viên" ? "selected" : ""}}>Kỹ thuật viên</option>
@@ -74,7 +74,7 @@
                 <div class="col-lg-4 col-12">
                     <div class="form-group">
                         <label for="degree_2">Sau đại học:</label>
-                        <select class="form-control" name="degree_2" >
+                        <select class="form-control" name="degree_2" style="background: #fff;color: #000;" >
                             <option {{$member->degree_2 === "Bác sĩ chuyên khoa I" ? "selected" : ""}}>Bác sĩ chuyên khoa I</option>
                             <option {{$member->degree_2 === "Bác sĩ chuyên khoa II" ? "selected" : ""}}>Bác sĩ chuyên khoa II</option>
                             <option {{$member->degree_2 === "Thạc sĩ" ? "selected" : ""}}>Thạc sĩ</option>
@@ -87,7 +87,7 @@
                 <div class="col-lg-4 col-12">
                     <div class="form-group">
                         <label for="function">Học hàm:</label>
-                        <select class="form-control" name="function" >
+                        <select class="form-control" name="function" style="background: #fff;color: #000;"  >
                             <option {{$member->function === "Phó giáo sư" ? "selected" : ""}}>Phó giáo sư</option>
                             <option {{$member->function === "Giáo sư" ? "selected" : ""}}>Giáo sư</option>
                         </select>

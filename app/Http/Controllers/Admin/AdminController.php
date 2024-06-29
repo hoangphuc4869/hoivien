@@ -17,11 +17,20 @@ class AdminController extends Controller
     
     public function index() {
         
-        return view("admin.main");
+        $members = Member::orderBy('id', 'desc')
+                                ->take(4)
+                                ->get();
+        $membersCount = Member::count();
+        $totalActiveMembers = Member::where('status', 'active')->count();
+        $totalInactiveMembers = Member::where('status', 'inactive')->count();
+        $totalBLockedMembers = Member::where('status', 'blocked')->count();
+        $totalAboutMembers = Member::where('about_to_date', 1)->count();
+        $re = User::where('status', 'pending')->count();
+        return view("admin.main", compact('membersCount','members', 'totalActiveMembers', 'totalBLockedMembers', 'totalAboutMembers', 'totalInactiveMembers', 're'));
     }
     
     public function member(Member $members) {
-        $all_members = $all_members = $members->orderBy('id', 'desc')->get();
+        $all_members = $members->orderBy('id', 'desc')->get();
 
         if(Gate::allows('view')){
             return view("admin.member", compact('all_members'));
@@ -48,6 +57,23 @@ class AdminController extends Controller
         
        
     }
+
+    public function register_list() {
+        
+        $all_members = User::where("status", "pending")
+                      ->orderBy('id', 'desc')
+                      ->get();
+
+
+        if(Gate::allows('view')){
+            return view("admin.register", compact('all_members'));
+        }
+        else {
+            abort(403, 'Bạn không có quyền truy cập trang này.');
+        }
+    }
+
+    
     
     public function changeStatus(Request $request)
     {
@@ -68,7 +94,12 @@ class AdminController extends Controller
     public function transaction() {
         $transactions = Transaction::paginate(15);
         $members = Member::all();
-        return view('admin.transaction', compact('transactions','members'));
+        if(Gate::allows('view')){
+           return view('admin.transaction', compact('transactions','members'));
+        }
+        else {
+            abort(403, 'Bạn không có quyền truy cập trang này.');
+        }
     }
     public function query(Request $request) {
 
@@ -159,6 +190,45 @@ class AdminController extends Controller
         }
     }
 
+    public function user_confirm(Request $request) {
+
+        $itemId = $request->itemId;
+
+        $item = User::find($itemId);
+
+        if ($item) {
+
+            if($item->status === "pending") {
+                if($request->status === 'success'){
+
+                    $item->status = "verified";
+            
+                    $newMember = new Member();
+                    $newMember->name = $item['name'];
+                    $newMember->email = $item['email'];
+                    $newMember->status = "active";
+                    $newMember->start = now();
+                    $newMember->end = $newMember->start->copy()->addYear();
+                    $newMember->user_id = $item->id; 
+                    $newMember->save();
+                    $item->save();
+                }
+                else {
+                    $item->delete();
+                }
+            }
+
+            
+
+            return response()->json([
+                'success' => true,
+                'message' => "Thành công",
+            ]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Thất bại']);
+        }
+    }
+
     // public function get_user_transactions($id){
     //     $transactions = Transaction::paginate(15);
     //     $members = Member::all();
@@ -195,6 +265,27 @@ class AdminController extends Controller
                 'success' => true, 
                 'message' => 'Tìm thấy ' . $ids->count() . ' kết quả', 
                 'member' => $ids
+            ]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Không tìm thấy']);
+        }
+    }
+
+    public function search_transaction(Request $request) {
+        $searchInput = $request->input('searchInput');
+        $query = Transaction::query();
+        
+        if ($searchInput) {
+            $ids = $query->where('user_name', 'LIKE', "%{$searchInput}%")
+                ->orderBy('id', 'desc')
+                ->get(['id', 'user_id']);
+              
+
+            return response()->json([
+                'success' => true, 
+                'message' => 'Tìm thấy ' . $ids->count() . ' kết quả', 
+                'member' => $ids,
+                
             ]);
         } else {
             return response()->json(['success' => false, 'message' => 'Không tìm thấy']);

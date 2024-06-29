@@ -11,7 +11,14 @@ body * {
   font-family: 'Be Vietnam Pro', san-serif;
 }
 </style>
+@if (Auth::user()->status !== "verified")
+    @php
+         abort(403, 'Tài khoản của bạn chưa được xác nhận');
+    @endphp
+@endif
 <body style="" data-id = "{{Auth::user()->id}}">
+
+
   <div class="container-scroller"> 
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
@@ -48,17 +55,25 @@ body * {
               <input type="text" class="form-control">
             </div>
           </li>
+
+          @php
+              use App\Models\Member;
+              $current_member = Member::where('user_id', Auth::user()->id )->first();
+          @endphp
     
           <li class="nav-item dropdown d-none d-lg-block user-dropdown">
             <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-              <img class="img-xs rounded-circle" src="" alt="Profile image"> </a>
+              
+              <img class="img-xs rounded-circle" src="{{ $current_member && $current_member->thumb ? $current_member->thumb : asset('/images/1.jpg') }}" alt="Profile image"> </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <div class="dropdown-header text-center">
-                <img class="img-md rounded-circle" src="" alt="Profile image">
-                <p class="mb-1 mt-3 font-weight-semibold">{{Auth::user()->name}}</p>
+                <img class="img-md rounded-circle" style="width:50px" src="{{ $current_member && $current_member->thumb ? $current_member->thumb : asset('/images/1.jpg') }}" alt="Profile image">
+                <p class="mb-1 mt-1 font-weight-semibold">{{Auth::user()->name}}</p>
                 <p class="fw-light text-muted mb-0">{{Auth::user()->email}}</p>
               </div>
-              <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> Thông tin của tôi</a>             
+              @if (Auth::user()->role === "user")
+                <a href="/profile/{{Auth::user()->id}}" class="dropdown-item"><i class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> Thông tin của tôi</a>             
+              @endif
               
                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
@@ -285,9 +300,15 @@ body * {
               <div class="collapse" id="form-elements" style="">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item"><a class="nav-link" href="{{route('member')}}">Danh sách hội viên</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{{route('register_index')}}">Đăng ký hội viên</a></li>  
+                  <li class="nav-item"><a class=" cusli nav-link {{Route::is('register_list') ? 'color' : ''}}" href="{{route('register_list')}}">Đăng ký hội viên</a></li>  
                   
                 </ul>
+                <style>
+                  .cusli:not(.color) {
+                    color: #484848 !important ;
+                  }
+
+                </style>
               </div>
             </li>
             <li class="nav-item">
@@ -335,12 +356,12 @@ body * {
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-        {{-- <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span>
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-center">
+            {{-- <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash.</span> --}}
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Copyright © 2021. All rights reserved.</span>
           </div>
-        </footer> --}}
+        </footer>
         <!-- partial -->
       </div>
       <!-- main-panel ends -->
@@ -353,4 +374,23 @@ body * {
 </body>
 
 </html>
+
+<style>
+  @media (max-width: 900px){
+    nav#sidebar {
+    z-index: 999;
+    border: 1px solid #d2ceced1;
+}
+.d-flex.gap-2.align-items-center.box-filter {
+    width: 100%;
+}
+.radio-inputs .radio .name {
+   
+    padding: 5px 0;
+   
+    font-size: 9px;
+}
+  }
+
+</style>
 

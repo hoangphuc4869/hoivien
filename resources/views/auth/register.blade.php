@@ -29,18 +29,38 @@
                 <div class="row justify-content-center">
                     <div class="col-md-6 col-lg-4">
                         <div class="login-wrap p-0">
-                            <h3 class="mb-4 text-center">Xin chào</h3>
+                            <h3 class="mb-4 text-center">Đăng ký hội viên</h3>
                             @if ($errors->any())
-                                <div class="alert alert-danger">{{ $errors->first() }}</div>
+                                @foreach ($errors->all() as $error)
+                                    <div class="alert alert-danger">{{ $error }}</div>
+                                @endforeach
+                            @endif
+
+                            @if (Session::has('success'))
+                                <div class="alert alert-success">
+                                    {{ Session::get('success') }}
+                                </div>
                             @endif
                             
                             
                             <form
-                                action="{{ route('login.submit') }}"
+                                action="{{ route('regis') }}"
                                 class="signin-form"
                                 method="POST"
                             >
                                 @csrf
+                                <div class="form-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="Họ tên"
+                                        name="name"
+                                        value="{{ old('name') }}"
+                                        autocomplete="name"
+                                        required
+                                    />
+                                </div>
+
                                 <div class="form-group">
                                     <input
                                         type="text"
@@ -68,28 +88,37 @@
                                         class="fa fa-fw fa-eye field-icon toggle-password"
                                     ></span>
                                 </div>
+
+                                <div class="form-group">
+                                    <input
+                                        id="password-field-confirm"
+                                        type="password"
+                                        class="form-control"
+                                        placeholder="Xác nhận Mật khẩu"
+                                        name="confirm_pass"
+                                        required
+                                        autocomplete="current-password"
+                                    />
+                                    <span
+                                        toggle="#password-field"
+                                        class="fa fa-fw fa-eye field-icon toggle-password"
+                                    ></span>
+                                </div>
                             
                                 <div class="form-group">
                                     <button
                                         type="submit"
                                         class="form-control btn btn-primary submit px-3"
                                     >
-                                        Đăng nhập
+                                        Đăng ký
                                     </button>
                                 </div>
-                                <div class="form-group d-md-flex">
-                                    <div class="w-50">
-                                        <label
-                                            class="checkbox-wrap checkbox-primary"
-                                            >Ghi nhớ
-                                            <input type="checkbox" checked name="remember_token "/>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
+                                <div class="form-group d-md-flex justify-content-center">
                                     
-                                    <div class="w-50 text-md-right">
-                                        <a href="{{route('register_index')}}" class="checkbox-primary"
-                                            >Đăng ký hội viên</a
+                                    
+                                    <div class="w-50 text-center" style="font-size: 13px">
+                                        <a href="/login" class="checkbox-primary"
+                                            >Đăng nhập</a
                                         >
                                     </div>
                                    
