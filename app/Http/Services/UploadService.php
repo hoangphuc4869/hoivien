@@ -14,10 +14,10 @@ class UploadService
                 $pathFull = 'uploads/' . date("Y/m/d");
 
                 $request->file('file')->storeAs(
-                    'public/' . $pathFull, $name
+                    'public/images/' . $pathFull, $name
                 );
 
-                return '/storage/' . $pathFull . '/' . $name;
+                return '/storage/images/' . $pathFull . '/' . $name;
             } catch (\Exception $error) {
                 return false;
             }

@@ -37,6 +37,7 @@ $("#upload").change(function () {
         data: form,
         url: "/admin/upload/services",
         success: function (results) {
+            console.log(results);
             if (results.error === false) {
                 $("#image_show").html(
                     '<a href="' +

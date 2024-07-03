@@ -176,9 +176,62 @@
                     Tài khoản hết hạn <br>
                     Vui lòng gia hạn để tiếp tục
                 </p>
-                <button class="click-btn mt-5">
+                <button class="click-btn mt-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <span>Gia hạn</span>
                 </button>
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Đóng Phí Thường Niên</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                  <div class="text-pay mb-3" style="line-height: 2">
+                                      <p>Số tài khoản: <span>34405517</span></p> 
+                                      <p>
+                                          Chủ tài khoản: <span>LIEN CHI HOI Y HOC THE DUC THE THAO TP HCM</span> 
+                                      </p>
+                                      <p>Ngân hàng: <span>Ngân hàng TMCP Á Châu (ACB)</span> </p>
+                                      <p>Chi nhánh: <span>ACB - PGD NGUYEN TRI PHUONG</span></p> 
+                                      <p>Swiftcode: <span>ASCBVNVX</span></p>
+                                      <p class="note font-weight-bold mt-3">
+                                          Vui lòng điền nội dung giao dịch theo cú pháp: <br>
+                                          
+                                          <span class="text-success">GH_Họ tên_Số điện thoại <br> ( GH_NguyenVanA_0333792102 )</span>
+                                      </p>
+                                  </div>
+
+                                  <style>
+                                      .text-pay p {
+                                          margin-bottom: 5px;
+                                      }
+                                      .text-pay span {
+                                          color: rgb(35, 2, 146);
+                                          /* font-size: 18px; */
+                                          font-weight: 800;
+                                          margin-left: 3px;
+                                      }
+                                      .img-qr {
+                                          margin: 0  auto;
+                                          display: block;
+                                      }
+                                      .modal-body {
+                                          background-color: antiquewhite;
+                                      } 
+                                  </style>
+
+                                  <div class="qr-wrap">
+                                      <img class="img-qr" src="/images/qr.jpg" alt="Profile image">
+                                  </div>
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
             </div>
         </div>
      @endif
@@ -285,7 +338,7 @@
     if(btn){
         btn.addEventListener("click", () => {
             btn.classList.add("disabled");
-            alert("Đã đăng ký gia hạn. Vui lòng chờ xác nhận");
+            // alert("Đã đăng ký gia hạn. Vui lòng chờ xác nhận");
             
             var userId = document.querySelector("body").dataset.id;
             var token = $('meta[name="csrf-token"]').attr('content');

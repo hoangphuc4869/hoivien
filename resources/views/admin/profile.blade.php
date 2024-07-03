@@ -12,7 +12,7 @@
                                 <img src="{{ $member->thumb }}">
                             </a>
                         </div>
-                        <input type="hidden" name="thumb" value="{{ $member->thumb }}" id="thumb">
+                        <input type="hidden" name="thumb" value="{{$member->thumb}}" id="thumb">
                     </div>
                 </div>
 
@@ -157,6 +157,7 @@
 
                     <!-- Button trigger modal -->
                     
+                    @if ($member->status === "inactive" or $member->about_to_date === 1 )
                     <div class="payment">
                         <button type="button" class="dongphi {{ $member->status === "inactive" ? "enabled" : "" }} btn btn btn-warning btn-rounded btn-fw" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Đóng Phí Thường Niên
@@ -172,9 +173,43 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p class="text-pay">Phí Thường Niên: <b>500.000 VND</b></p>
+                                    <div class="text-pay mb-3" style="line-height: 2">
+                                        <p>Số tài khoản: <span>34405517</span></p> 
+                                        <p>
+                                            Chủ tài khoản: <span>LIEN CHI HOI Y HOC THE DUC THE THAO TP HCM</span> 
+                                        </p>
+                                        <p>Ngân hàng: <span>Ngân hàng TMCP Á Châu (ACB)</span> </p>
+                                        <p>Chi nhánh: <span>ACB - PGD NGUYEN TRI PHUONG</span></p> 
+                                        <p>Swiftcode: <span>ASCBVNVX</span></p>
+                                        <p class="note font-weight-bold mt-3">
+                                            Vui lòng điền nội dung giao dịch theo cú pháp: <br>
+                                            
+                                            <span class="text-success">GH_Họ tên_Số điện thoại <br> ( GH_NguyenVanA_0333792102 )</span>
+                                        </p>
+                                    </div>
 
-                                    <img class="img-qr" src="/template/admin/images/faces/face9.jpg" alt="Profile image">
+                                    <style>
+                                        .text-pay p {
+                                            margin-bottom: 5px;
+                                        }
+                                        .text-pay span {
+                                            color: rgb(35, 2, 146);
+                                            /* font-size: 18px; */
+                                            font-weight: 800;
+                                            margin-left: 3px;
+                                        }
+                                        .img-qr {
+                                            margin: 0  auto;
+                                            display: block;
+                                        }
+                                        .modal-body {
+                                            background-color: antiquewhite;
+                                        } 
+                                    </style>
+
+                                    <div class="qr-wrap">
+                                        <img class="img-qr" src="/images/qr.jpg" alt="Profile image">
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -182,6 +217,8 @@
                             </div>
                         </div>
                     </div>
+                        
+                    @endif
                 </div>
             </div>
         </div>
@@ -195,8 +232,8 @@
 
 <style>
     .dongphi {
-        pointer-events: none;
-        opacity: 0.2;
+        /* pointer-events: none;
+        opacity: 0.2; */
     }
     .dongphi.enabled {
         pointer-events: all;
